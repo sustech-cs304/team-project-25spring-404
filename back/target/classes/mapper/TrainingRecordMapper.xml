@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.training.mapper.TrainingRecordMapper">
+    
+    <resultMap type="com.training.model.TrainingRecord" id="TrainingRecordResult">
+        <id     property="id"          column="id"          />
+        <result property="userId"      column="user_id"     />
+        <result property="taskId"      column="task_id"     />
+        <result property="goalId"      column="goal_id"     />
+        <result property="recordValue" column="record_value"/>
+        <result property="recordDesc"  column="record_desc" />
+        <result property="recordRemark" column="record_remark" />
+        <result property="startDate"   column="start_date"  />
+        <result property="recordDate"  column="record_date" />
+        <result property="createTime"  column="create_time" />
+        <result property="updateTime"  column="update_time" />
+    </resultMap>
+    
+    <sql id="selectTrainingRecordVo">
+        select id, user_id, task_id, goal_id, record_value, record_desc, record_remark, start_date, record_date, create_time, update_time
+        from training_record
+    </sql>
+    
+    <select id="selectById" parameterType="Integer" resultMap="TrainingRecordResult">
+        <include refid="selectTrainingRecordVo"/>
+        where id = #{id}
+    </select>
+    
+    <select id="selectByUserId" parameterType="Integer" resultMap="TrainingRecordResult">
+        <include refid="selectTrainingRecordVo"/>
+        where user_id = #{userId}
+        order by record_date desc
+    </select>
+    
+    <select id="selectByTaskId" parameterType="Integer" resultMap="TrainingRecordResult">
+        <include refid="selectTrainingRecordVo"/>
+        where task_id = #{taskId}
+        order by record_date desc
+    </select>
+    
+    <select id="selectByGoalId" parameterType="Integer" resultMap="TrainingRecordResult">
+        <include refid="selectTrainingRecordVo"/>
+        where goal_id = #{goalId}
+        order by record_date desc
+    </select>
+    
+    <insert id="insert" parameterType="com.training.model.TrainingRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into training_record(
+            user_id,
+            task_id,
+            goal_id,
+            record_value,
+            record_desc,
+            record_remark,
+            start_date,
+            record_date,
+            create_time,
+            update_time
+        )values(
+            #{userId},
+            #{taskId},
+            #{goalId},
+            #{recordValue},
+            #{recordDesc},
+            #{recordRemark},
+            #{startDate},
+            #{recordDate},
+            now(),
+            now()
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.training.model.TrainingRecord">
+        update training_record
+        <set>
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="goalId != null">goal_id = #{goalId},</if>
+            <if test="recordValue != null">record_value = #{recordValue},</if>
+            <if test="recordDesc != null">record_desc = #{recordDesc},</if>
+            <if test="recordRemark != null">record_remark = #{recordRemark},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="recordDate != null">record_date = #{recordDate},</if>
+            update_time = now()
+        </set>
+        where id = #{id}
+    </update>
+    
+    <delete id="deleteById" parameterType="Integer">
+        delete from training_record where id = #{id}
+    </delete>
+    
+</mapper> 

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.training.mapper.UserMapper">
+
+    <resultMap type="User" id="UserResult">
+        <id     property="id"       column="id"        />
+        <result property="username" column="username"  />
+        <result property="password" column="password"  />
+        <result property="email"    column="email"     />
+        <result property="nickname" column="nickname"  />
+        <result property="avatar"   column="avatar"    />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+    
+    <sql id="selectUserVo">
+        select id, username, password, email, nickname, avatar, create_time, update_time
+        from user
+    </sql>
+    
+    <select id="selectUserById" parameterType="Integer" resultMap="UserResult">
+        <include refid="selectUserVo"/>
+        where id = #{id}
+    </select>
+    
+    <select id="selectUserByUsername" parameterType="String" resultMap="UserResult">
+        <include refid="selectUserVo"/>
+        where username = #{username}
+    </select>
+    
+    <select id="selectAll" resultMap="UserResult">
+        <include refid="selectUserVo"/>
+    </select>
+    
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null">username,</if>
+            <if test="password != null">password,</if>
+            <if test="email != null">email,</if>
+            <if test="nickname != null">nickname,</if>
+            <if test="avatar != null">avatar,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="username != null">#{username},</if>
+            <if test="password != null">#{password},</if>
+            <if test="email != null">#{email},</if>
+            <if test="nickname != null">#{nickname},</if>
+            <if test="avatar != null">#{avatar},</if>
+        </trim>
+    </insert>
+    
+    <update id="update" parameterType="User">
+        update user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    
+    <delete id="deleteById" parameterType="Integer">
+        delete from user where id = #{id}
+    </delete>
+
+</mapper> 

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.training.mapper.TrainingTaskMapper">
+
+    <resultMap id="TrainingTaskResult" type="com.training.model.TrainingTask">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="taskName" column="task_name"/>
+        <result property="taskDesc" column="task_desc"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="repeatType" column="repeat_type"/>
+        <result property="repeatDays" column="repeat_days"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+    
+    <select id="selectById" parameterType="Integer" resultMap="TrainingTaskResult">
+        select id, user_id, task_name, task_desc, start_time, end_time, repeat_type, repeat_days, status, create_time, update_time
+        from training_task
+        where id = #{id}
+    </select>
+    
+    <select id="selectByUserId" parameterType="Integer" resultMap="TrainingTaskResult">
+        select id, user_id, task_name, task_desc, start_time, end_time, repeat_type, repeat_days, status, create_time, update_time
+        from training_task
+        where user_id = #{userId}
+        order by create_time desc
+    </select>
+    
+    <insert id="insert" parameterType="com.training.model.TrainingTask" useGeneratedKeys="true" keyProperty="id">
+        insert into training_task (
+            user_id, task_name, task_desc, start_time, end_time, repeat_type, repeat_days, status, create_time, update_time
+        ) values (
+            #{userId}, #{taskName}, #{taskDesc}, #{startTime}, #{endTime}, #{repeatType}, #{repeatDays}, #{status}, now(), now()
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.training.model.TrainingTask">
+        update training_task
+        <set>
+            <if test="taskName != null">task_name = #{taskName},</if>
+            <if test="taskDesc != null">task_desc = #{taskDesc},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="repeatType != null">repeat_type = #{repeatType},</if>
+            <if test="repeatDays != null">repeat_days = #{repeatDays},</if>
+            <if test="status != null">status = #{status},</if>
+            update_time = now()
+        </set>
+        where id = #{id}
+    </update>
+    
+    <delete id="deleteById" parameterType="Integer">
+        delete from training_task where id = #{id}
+    </delete>
+    
+</mapper> 

@@ -1,0 +1,70 @@
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  min-width: 1024px;
+}
+
+.el-breadcrumb {
+  margin-bottom: 15px;
+}
+
+.el-card {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
+}
+
+.el-table {
+  margin-top: 15px;
+}
+
+.el-pagination {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.el-steps {
+  margin: 15px 0;
+}
+
+.el-step__title {
+  font-size: 13px;
+}
+
+.el-form-item {
+  margin-bottom: 20px !important;
+}
+
+.el-menu {
+  border-right: none;
+}
+
+.el-menu-item {
+  padding: 0 20px;
+}
+
+.el-submenu__title {
+  padding: 0 20px;
+}
+
+.el-submenu .el-menu-item {
+  padding: 0 40px;
+}
+
+/* 美化滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+} 

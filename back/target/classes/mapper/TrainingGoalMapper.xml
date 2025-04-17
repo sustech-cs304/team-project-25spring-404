@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.training.mapper.TrainingGoalMapper">
+    
+    <resultMap type="com.training.model.TrainingGoal" id="TrainingGoalResult">
+        <id     property="id"          column="id"          />
+        <result property="userId"      column="user_id"     />
+        <result property="goalName"    column="goal_name"   />
+        <result property="goalDesc"    column="goal_desc"   />
+        <result property="targetValue" column="target_value"/>
+        <result property="currentValue" column="current_value"/>
+        <result property="unit"        column="unit"        />
+        <result property="startDate"   column="start_date"  />
+        <result property="endDate"     column="end_date"    />
+        <result property="status"      column="status"      />
+        <result property="createTime"  column="create_time" />
+        <result property="updateTime"  column="update_time" />
+    </resultMap>
+    
+    <sql id="selectTrainingGoalVo">
+        select id, user_id, goal_name, goal_desc, target_value, current_value, unit, start_date, end_date, status, create_time, update_time
+        from training_goal
+    </sql>
+    
+    <select id="selectById" parameterType="Integer" resultMap="TrainingGoalResult">
+        <include refid="selectTrainingGoalVo"/>
+        where id = #{id}
+    </select>
+    
+    <select id="selectByUserId" parameterType="Integer" resultMap="TrainingGoalResult">
+        <include refid="selectTrainingGoalVo"/>
+        where user_id = #{userId}
+        order by create_time desc
+    </select>
+    
+    <insert id="insert" parameterType="com.training.model.TrainingGoal" useGeneratedKeys="true" keyProperty="id">
+        insert into training_goal(
+            user_id,
+            goal_name,
+            goal_desc,
+            target_value,
+            current_value,
+            unit,
+            start_date,
+            end_date,
+            status,
+            create_time,
+            update_time
+        )values(
+            #{userId},
+            #{goalName},
+            #{goalDesc},
+            #{targetValue},
+            #{currentValue},
+            #{unit},
+            #{startDate},
+            #{endDate},
+            #{status},
+            now(),
+            now()
+        )
+    </insert>
+    
+    <update id="update" parameterType="com.training.model.TrainingGoal">
+        update training_goal
+        <set>
+            <if test="goalName != null and goalName != ''">goal_name = #{goalName},</if>
+            <if test="goalDesc != null">goal_desc = #{goalDesc},</if>
+            <if test="targetValue != null">target_value = #{targetValue},</if>
+            <if test="currentValue != null">current_value = #{currentValue},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="status != null">status = #{status},</if>
+            update_time = now()
+        </set>
+        where id = #{id}
+    </update>
+    
+    <delete id="deleteById" parameterType="Integer">
+        delete from training_goal where id = #{id}
+    </delete>
+    
+</mapper> 
